@@ -189,18 +189,24 @@ while True:
                <br> max_size = len(model2.wv.vocab)-1
 <br> w2v = np.zeros((max_size,model2.layer1_size))
 <br> if not os.path.exists(‘projections’):
-<br> os.makedirs(‘projections’)
-<br> with open(“projections/metadata.tsv”,”w+”) as file_metadata:
-<br> for i, word in enumerate(model2.wv.index2word[:max_size]):
-<br>w2v[i] = model2.wv[word]
-<br>file_metadata.write(word + ‘\n’) sess = tf.InteractiveSession() with tf.device(“/cpu:0”):
-<br>embedding = tf.Variable(w2v, trainable=False, name=’embedding’) tf.global_variables_initializer().run()
+<br> &nbsp;&nbsp; os.makedirs(‘projections’)
+<br> with open(“projections/metadata.tsv”,”w+”) as file_metadata: 
+<br> &nbsp;&nbsp; for i, word in enumerate(model2.wv.index2word[:max_size]):
+<br> &nbsp;&nbsp;&nbsp;&nbsp; w2v[i] = model2.wv[word]
+<br> &nbsp;&nbsp;&nbsp;&nbsp; file_metadata.write(word + ‘\n’) 
+                  <br> sess = tf.InteractiveSession() with tf.device(“/cpu:0”):
+<br> &nbsp;&nbsp;embedding = tf.Variable(w2v, trainable=False, name=’embedding’) 
+                  tf.global_variables_initializer().run()
 <br>saver = tf.train.Saver()
-<br>writer = tf.summary.FileWriter(‘projections’,sess.graph) config = projector.ProjectorConfig()
+<br>writer = tf.summary.FileWriter(‘projections’,sess.graph) 
+                  config = projector.ProjectorConfig()
 <br>embed = config.embeddings.add()
 <br>embed.tensor_name = ‘embedding’
-<br> embed.metadata_path = ‘metadata.tsv’ projector.visualize_embeddings(writer, config) saver.save(sess, ‘projections/model.ckpt’, global_step=max_size) </p>
-              
+<br> embed.metadata_path = ‘metadata.tsv’
+                  projector.visualize_embeddings(writer, config)
+                  saver.save(sess, ‘projections/model.ckpt’, global_step=max_size)
+                   <br> </i> </p>
+             
               
             </td>
           </tr>
