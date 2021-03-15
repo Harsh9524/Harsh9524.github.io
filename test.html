@@ -183,22 +183,23 @@ while True:
               <p>
                 <i> TensorBoard provides the visualisation and tooling needed for machine learning experimentation. </i> </p>
               <p> The following code can be used for visualising the data with the help of TensorBoard projector which creates a mesh of words using PCA and each word is connected to other by calculating their Cosine similarities.</p>
-              <p>
-                model2 = gensim.models.keyedvectors.KeyedVectors.load(‘model_out’)
-                max_size = len(model2.wv.vocab)-1
-w2v = np.zeros((max_size,model2.layer1_size))
-if not os.path.exists(‘projections’):
-os.makedirs(‘projections’)
-with open(“projections/metadata.tsv”,”w+”) as file_metadata:
-for i, word in enumerate(model2.wv.index2word[:max_size]):
-w2v[i] = model2.wv[word]
-file_metadata.write(word + ‘\n’) sess = tf.InteractiveSession() with tf.device(“/cpu:0”):
-embedding = tf.Variable(w2v, trainable=False, name=’embedding’) tf.global_variables_initializer().run()
-saver = tf.train.Saver()
-writer = tf.summary.FileWriter(‘projections’,sess.graph) config = projector.ProjectorConfig()
-embed = config.embeddings.add()
-embed.tensor_name = ‘embedding’
-embed.metadata_path = ‘metadata.tsv’ projector.visualize_embeddings(writer, config) saver.save(sess, ‘projections/model.ckpt’, global_step=max_size) </p>
+              <p style="color:LightGray;">
+                <i> 
+                <br> model2 = gensim.models.keyedvectors.KeyedVectors.load(‘model_out’)
+               <br> max_size = len(model2.wv.vocab)-1
+<br> w2v = np.zeros((max_size,model2.layer1_size))
+<br> if not os.path.exists(‘projections’):
+<br> os.makedirs(‘projections’)
+<br> with open(“projections/metadata.tsv”,”w+”) as file_metadata:
+<br> for i, word in enumerate(model2.wv.index2word[:max_size]):
+<br>w2v[i] = model2.wv[word]
+<br>file_metadata.write(word + ‘\n’) sess = tf.InteractiveSession() with tf.device(“/cpu:0”):
+<br>embedding = tf.Variable(w2v, trainable=False, name=’embedding’) tf.global_variables_initializer().run()
+<br>saver = tf.train.Saver()
+<br>writer = tf.summary.FileWriter(‘projections’,sess.graph) config = projector.ProjectorConfig()
+<br>embed = config.embeddings.add()
+<br>embed.tensor_name = ‘embedding’
+<br> embed.metadata_path = ‘metadata.tsv’ projector.visualize_embeddings(writer, config) saver.save(sess, ‘projections/model.ckpt’, global_step=max_size) </p>
               
               
             </td>
