@@ -40,7 +40,7 @@
                 <a href="https://www.researchgate.net/profile/Harsh_Panwar2">ResearchGate</a> &nbsp/&nbsp
                 <a href="https://scholar.google.com/citations?user=g0UG174AAAAJ&hl=en">Google Scholar</a> &nbsp/&nbsp
                 <a href="https://www.github.com/Harsh9524">Github</a> &nbsp/&nbsp
-                <a href="https://www.instagram.com/harsh_.panwar/">Instagram</a>
+                <a href="https://twitter.com/harsh9524">Twitter</a>
                 <!-- <a href="https://www.linkedin.com/in/harsh-panwar/">LinkedIn</a> -->
               </p>
             </td>
@@ -74,10 +74,10 @@ So with the help of a practical example I will try to explain the concepts of Wo
               <heading>Task</heading>
               <p>
                We are given a dataset which is in the form:
-                <br>
+                <p style="text-align:center;background-color:rgb(224,224,224);" >
                 <i> [[skill1,skill2,skill3,...],[skill1,skill4,skill6,...],....] </i>
                 <!-- <span class="highlight">highlighted</span>. -->
-                <br>
+              </p>
                 Each list inside the main list is of a unique candidate. So the number of candidates is equal to the length of the outer list. Which in our dataset is around 3 million. We want to learn an embedding representation of each skill and plot it using TensorBoard to analyze. The idea to solve is of word embeddings where words of similar meaning tend to lie close to each other for example red and black lie closer to each other in the embedding space than semantically diTerent words like black and apple. Since our dataset contains skills instead of general words skills like Python and Java should lie closer to each other than say Python and Sales Management.
               </p>
             </td>
@@ -96,45 +96,53 @@ So with the help of a practical example I will try to explain the concepts of Wo
 
 Firstly, since our data is in .txt format we need to open it using the with open command in python as follows:
 
-                <p>
-                <i>with open(“all_linkedin_skill_data”,mode=’r’) as i, open(‘out.txt’,’w’) as
-x = i.read(1)
+                <p style="background-color:rgb(224,224,224);">
+                <i> <br> &nbsp;&nbsp; with open(“all_linkedin_skill_data”,mode=’r’) as i, open(‘out.txt’,’w’) as
+<br> &nbsp;&nbsp;&nbsp;&nbsp; x = i.read(1)
+                  <br>
  </i>
                 <!-- <span class="highlight">highlighted</span>. -->
                 </p>
                 Then to organize the data and make it more understandable we can use one of the following approaches to clean the data:
                 <br> <i>Thanks to Uwe Ziegenhagen for answering my question on stackover8ow and giving me this better approach to process the data. </i> <br>
                  </p>
-              <p>
+              <p style="background-color:rgb(224,224,224);">
                <i> 
-while True:
-<br> x = i.read(1)
-<br> if x == ‘’: # end of file has been reached break
-<br> elif x==’ ‘:
-<br> pass
-<br> elif x==’]’:
-<br> pass
-<br> elif x==’[‘:
-<br> if lastreadchar == ‘[‘:
-<br> # at the beginning of the file, don’t do anything pass
-<br> elif lastreadchar == ‘\n’: # a new line pass
-<br> elif lastreadchar == ‘,’: # a new line pass
-<br> elif x==’,’:
-<br> if lastreadchar == ‘]’: # at the beginning of the file
-<br> o.write(‘\n’) else:
-<br> o.write(x) else:
-<br> o.write(x) lastreadchar = x
+&nbsp;&nbsp;while True:
+<br>&nbsp;&nbsp;&nbsp;&nbsp; x = i.read(1)
+<br> &nbsp;&nbsp;if x == ‘’: # end of file has been reached break
+<br>&nbsp;&nbsp;&nbsp;&nbsp; elif x==’ ‘:
+<br>&nbsp;&nbsp;&nbsp;&nbsp; pass
+<br>&nbsp;&nbsp;&nbsp;&nbsp; elif x==’]’:
+<br>&nbsp;&nbsp;&nbsp;&nbsp; pass
+<br>&nbsp;&nbsp;&nbsp;&nbsp; elif x==’[‘:
+<br>&nbsp;&nbsp;&nbsp;&nbsp; if lastreadchar == ‘[‘:
+<br>&nbsp;&nbsp;&nbsp;&nbsp; # at the beginning of the file, don’t do anything pass
+<br>&nbsp;&nbsp;&nbsp;&nbsp; elif lastreadchar == ‘\n’: # a new line pass
+<br>&nbsp;&nbsp;&nbsp;&nbsp; elif lastreadchar == ‘,’: # a new line pass
+<br>&nbsp;&nbsp;&nbsp;&nbsp; elif x==’,’:
+<br>&nbsp;&nbsp;&nbsp;&nbsp; if lastreadchar == ‘]’: # at the beginning of the file
+<br>&nbsp;&nbsp;&nbsp;&nbsp; o.write(‘\n’) 
+        <br>&nbsp;&nbsp;&nbsp;&nbsp;         else:
+<br> &nbsp;&nbsp;&nbsp;&nbsp;o.write(x) 
+          <br>&nbsp;&nbsp;&nbsp;&nbsp;       else:
+<br>&nbsp;&nbsp;&nbsp;&nbsp; o.write(x) 
+             <br>&nbsp;&nbsp;&nbsp;&nbsp;    lastreadchar = x
                 </i>
               </p>
           <p>Or you can also use a simpler approach which I wrote myself </p>
-          <p>
+          <p style="background-color:rgb(224,224,224);">
             <i> 
-              with open('file.txt') as f: mylist = list(f)
-  <br> temp = mylist[0]
-<br> l =	temp.split(']') l.pop(0)
- <br> for x in range(0,len(l)): l[x] = l[x][3:]
-<br> l[x] = l[x].split(', ')
-
+              <br> 
+            &nbsp;&nbsp;  with open('file.txt') as f:
+              <br> &nbsp;&nbsp;&nbsp;&nbsp;mylist = list(f)
+  <br> &nbsp;&nbsp;&nbsp;&nbsp;temp = mylist[0]
+<br> &nbsp;&nbsp;&nbsp;&nbsp; l =	temp.split(']')
+        <br> &nbsp;&nbsp;&nbsp;&nbsp;      l.pop(0)
+ <br> for x in range(0,len(l)): 
+              <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; l[x] = l[x][3:]
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; l[x] = l[x].split(', ')
+<br>
 
             </i> 
           </p>
@@ -154,21 +162,24 @@ while True:
               </p>
               <p> <i> Word2vec is a group of related models that are used to produce word embeddings. These models are shallow, two-layer neural networks that are trained to reconstruct linguistic contexts of words. </i> </p>
               <p>Now we are going to implement CBOW model Xrst and then later on we will implement the Skip Gram model. </p>
-              <p> 
-               <br> if not os.path.exists(‘model_out’):
-              <br> model1 = gensim.models.Word2Vec(l, min_count = 1, size = 100, window = 5)
-<br> model1.save(‘model_out’)
-<br> skill1 = input(“Enter first skill:”).lower() 
-         <br>       skill2 = input(“Enter second skill:”).lower()
-             <br>   model_new = Word2Vec.load('model_out')
-                <br> print(model_new.similarity(skill1,skill2))
-
+             
+              <p"background-color:rgb(224,224,224);"> 
+                
+              <br>&nbsp;&nbsp; if not os.path.exists(‘model_out’):
+              <br>&nbsp;&nbsp;&nbsp;&nbsp; model1 = gensim.models.Word2Vec(l, min_count = 1, size = 100, window = 5)
+              <br> &nbsp;&nbsp;&nbsp;&nbsp;model1.save(‘model_out’)
+              <br> &nbsp;&nbsp;skill1 = input(“Enter first skill:”).lower() 
+              <br>&nbsp;&nbsp; skill2 = input(“Enter second skill:”).lower()
+              <br>&nbsp;&nbsp; model_new = Word2Vec.load('model_out')
+              <br>&nbsp;&nbsp; print(model_new.similarity(skill1,skill2))
+              <br>
               </p>
+              
               <p> An open source library known as Gensim which is built for implementing unsupervised machine learning algorithms can be used here to implement our Word2Vec models. It can be simply installed by using pip.
               </p>
-              <p> <i> <b> pip install Genism </b> </i> </p> 
+              <pstyle="text-align:center;background-color:rgb(224,224,224);"> <i> <b> pip install Genism </b> </i> </p> 
               <p> after importing the Word2Vec model from te Gensim .models we can directly use the Word2Vec() method for training our model. We can change our parameters by Hit and Trial to obtain better results. </p>
-              <p> <i> <b> from genism.models import Word2Vec </b> </i> </p> 
+              <p style="text-align:center;background-color:rgb(224,224,224);" > <i> <b> from genism.models import Word2Vec </b> </i> </p> 
               <p> To obtain the similarity of diTerent skills we can use the model.similarity(skill1,skill2) method which will give out the result in percentage. </p>
               
               </td>
@@ -185,27 +196,27 @@ while True:
               <p> The following code can be used for visualising the data with the help of TensorBoard projector which creates a mesh of words using PCA and each word is connected to other by calculating their Cosine similarities.</p>
               <p style="background-color:rgb(224,224,224);">
                 <i> 
-               &nbsp;&nbsp; <br> model2 = gensim.models.keyedvectors.KeyedVectors.load(‘model_out’)
-               &nbsp;&nbsp; <br> max_size = len(model2.wv.vocab)-1
-&nbsp;&nbsp;<br> w2v = np.zeros((max_size,model2.layer1_size))
-&nbsp;&nbsp;<br> if not os.path.exists(‘projections’):
-&nbsp;&nbsp;<br> &nbsp;&nbsp; os.makedirs(‘projections’)
-&nbsp;&nbsp;<br> with open(“projections/metadata.tsv”,”w+”) as file_metadata: 
-&nbsp;&nbsp;<br> &nbsp;&nbsp; for i, word in enumerate(model2.wv.index2word[:max_size]):
-&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; w2v[i] = model2.wv[word]
-&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; file_metadata.write(word + ‘\n’) 
-                  &nbsp;&nbsp;<br> sess = tf.InteractiveSession() with tf.device(“/cpu:0”):
-&nbsp;&nbsp;<br> &nbsp;&nbsp; embedding = tf.Variable(w2v, trainable=False, name=’embedding’) 
-               &nbsp;&nbsp;  <br>  tf.global_variables_initializer().run()
-&nbsp;&nbsp;<br>saver = tf.train.Saver()
-&nbsp;&nbsp;<br>writer = tf.summary.FileWriter(‘projections’,sess.graph) 
-               &nbsp;&nbsp;  <br>  config = projector.ProjectorConfig()
-&nbsp;&nbsp;<br>embed = config.embeddings.add()
-&nbsp;&nbsp;<br>embed.tensor_name = ‘embedding’
-&nbsp;&nbsp;<br> embed.metadata_path = ‘metadata.tsv’
-               &nbsp;&nbsp;  <br>  projector.visualize_embeddings(writer, config)
-             &nbsp;&nbsp;     <br> saver.save(sess, ‘projections/model.ckpt’, global_step=max_size)
-              &nbsp;&nbsp;     <br> </i> </p>
+                <br>&nbsp;&nbsp; model2 = gensim.models.keyedvectors.KeyedVectors.load(‘model_out’)
+                <br>&nbsp;&nbsp; max_size = len(model2.wv.vocab)-1
+<br> &nbsp;&nbsp;w2v = np.zeros((max_size,model2.layer1_size))
+<br> &nbsp;&nbsp;if not os.path.exists(‘projections’):
+<br> &nbsp;&nbsp;&nbsp;&nbsp; os.makedirs(‘projections’)
+<br> &nbsp;&nbsp;with open(“projections/metadata.tsv”,”w+”) as file_metadata: 
+<br> &nbsp;&nbsp;&nbsp;&nbsp; for i, word in enumerate(model2.wv.index2word[:max_size]):
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; w2v[i] = model2.wv[word]
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; file_metadata.write(word + ‘\n’) 
+                  &nbsp;&nbsp;&nbsp;&nbsp;<br> sess = tf.InteractiveSession() with tf.device(“/cpu:0”):
+<br> &nbsp;&nbsp;&nbsp;&nbsp; embedding = tf.Variable(w2v, trainable=False, name=’embedding’) 
+               &nbsp;&nbsp;&nbsp;&nbsp;  <br>  tf.global_variables_initializer().run()
+<br>&nbsp;&nbsp;saver = tf.train.Saver()
+<br>&nbsp;&nbsp;writer = tf.summary.FileWriter(‘projections’,sess.graph) 
+               &nbsp;&nbsp;&nbsp;&nbsp;  <br>  config = projector.ProjectorConfig()
+<br>&nbsp;&nbsp;embed = config.embeddings.add()
+<br>&nbsp;&nbsp;embed.tensor_name = ‘embedding’
+<br> &nbsp;&nbsp;embed.metadata_path = ‘metadata.tsv’
+               &nbsp;&nbsp;&nbsp;&nbsp;  <br>  projector.visualize_embeddings(writer, config)
+             &nbsp;&nbsp;&nbsp;&nbsp;     <br> saver.save(sess, ‘projections/model.ckpt’, global_step=max_size)
+              &nbsp;&nbsp;   &nbsp;&nbsp;  <br> </i> </p>
              
               <p> This is a little bit complex and hard to understand but have a look at my Github repo here for better understanding and raise a issue if you are struck anywhere. After we have successfully created our code for the implementation of TensorBoard the output of it can be generated by the following line of code. </p>
               <p style="text-align:center;background-color:rgb(224,224,224);">
