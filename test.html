@@ -56,11 +56,11 @@
             <td style="padding:20px;width:100%;vertical-align:middle">
               <heading>Introduction</heading>
               <p>
-                ord Embeddings are used to make a relation between a bag of words which are related to each other in some
+                Word Embeddings are used to make a relation between a bag of words which are related to each other in some
 sense. For instance if there is a dataset of 100 candidates containing skills of each candidate in the form of a list, using word embeddings we can make a relation between each word so that Java and C++ are more related than Java and Business Development.
 Word embedding is the collective name for a set of language modeling and feature learning techniques in natural language processing (NLP) where words or phrases from the vocabulary are mapped to vectors of real numbers. Conceptually it involves a mathematical embedding from a space with many dimensions per word to a continuous vector space with a much lower dimension.
 
-So with the help of a practical example I will try to explain the concepts of Word Embeddings. I have used Word2Vec as the algorithm implemented through Gensim. The full Github repo is available here.
+So with the help of a practical example I will try to explain the concepts of Word Embeddings. I have used Word2Vec as the algorithm implemented through Gensim. The full Github repo is available <a> <href="https://github.com/Harsh9524/Train-Skill-Embeddings"> here </a>.
 
                 <!-- <span class="highlight">highlighted</span>. -->
               </p>
@@ -68,7 +68,70 @@ So with the help of a practical example I will try to explain the concepts of Wo
           </tr>
         </tbody></table>
        
-       
+       <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+            <td style="padding:20px;width:100%;vertical-align:middle">
+              <heading>Task</heading>
+              <p>
+               We are given a dataset which is in the form:
+                <br>
+                <i> [[skill1,skill2,skill3,...],[skill1,skill4,skill6,...],....] </i>
+                <!-- <span class="highlight">highlighted</span>. -->
+                <br>
+                Each list inside the main list is of a unique candidate. So the number of candidates is equal to the length of the outer list. Which in our dataset is around 3 million. We want to learn an embedding representation of each skill and plot it using TensorBoard to analyze. The idea to solve is of word embeddings where words of similar meaning tend to lie close to each other for example red and black lie closer to each other in the embedding space than semantically diTerent words like black and apple. Since our dataset contains skills instead of general words skills like Python and Java should lie closer to each other than say Python and Sales Management.
+              </p>
+            </td>
+          </tr>
+        </tbody></table>
+        
+        
+        
+        
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+            <td style="padding:20px;width:100%;vertical-align:middle">
+              <heading>Data Pre-Processing</heading>
+              <p>
+               Now we have to clean our data and preprocess it since our data is very big and unstructured so it cannot be understood by our model in this format.
+
+Firstly, since our data is in .txt format we need to open it using the with open command in python as follows:
+
+                <br>
+                <i>with open(“all_linkedin_skill_data”,mode=’r’) as i, open(‘out.txt’,’w’) as
+x = i.read(1)
+ </i>
+                <!-- <span class="highlight">highlighted</span>. -->
+                <br>
+                Then to organize the data and make it more understandable we can use one of the following approaches to clean the data:
+                <br> <i>Thanks to Uwe Ziegenhagen for answering my question on stackover8ow and giving me this better approach to process the data. </i> <br>
+                 </p>
+              <p>
+               <i> 
+while True:
+<br> x = i.read(1)
+<br> if x == ‘’: # end of file has been reached break
+<br> elif x==’ ‘:
+<br> pass
+<br> elif x==’]’:
+<br> pass
+<br> elif x==’[‘:
+<br> if lastreadchar == ‘[‘:
+<br> # at the beginning of the file, don’t do anything pass
+<br> elif lastreadchar == ‘\n’: # a new line pass
+<br> elif lastreadchar == ‘,’: # a new line pass
+<br> elif x==’,’:
+<br> if lastreadchar == ‘]’: # at the beginning of the file
+<br> o.write(‘\n’) else:
+<br> o.write(x) else:
+<br> o.write(x) lastreadchar = x
+                </i>
+              </p>
+            </td>
+          </tr>
+        </tbody></table>
+        
+        
+        
       </td>
     </tr>
   </table>
