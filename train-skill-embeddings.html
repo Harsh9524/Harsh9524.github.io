@@ -165,7 +165,7 @@ Firstly, since our data is in .txt format we need to open it using the with open
              
               <p style="background-color:rgb(224,224,224);"> 
                 
-              <br>&nbsp;&nbsp; if not os.path.exists(‘model_out’):
+              &nbsp;&nbsp; if not os.path.exists(‘model_out’):
               <br>&nbsp;&nbsp;&nbsp;&nbsp; model1 = gensim.models.Word2Vec(l, min_count = 1, size = 100, window = 5)
               <br> &nbsp;&nbsp;&nbsp;&nbsp;model1.save(‘model_out’)
               <br> &nbsp;&nbsp;skill1 = input(“Enter first skill:”).lower() 
