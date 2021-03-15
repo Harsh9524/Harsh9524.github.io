@@ -96,12 +96,12 @@ So with the help of a practical example I will try to explain the concepts of Wo
 
 Firstly, since our data is in .txt format we need to open it using the with open command in python as follows:
 
-                <br>
+                <p>
                 <i>with open(“all_linkedin_skill_data”,mode=’r’) as i, open(‘out.txt’,’w’) as
 x = i.read(1)
  </i>
                 <!-- <span class="highlight">highlighted</span>. -->
-                <br>
+                </p>
                 Then to organize the data and make it more understandable we can use one of the following approaches to clean the data:
                 <br> <i>Thanks to Uwe Ziegenhagen for answering my question on stackover8ow and giving me this better approach to process the data. </i> <br>
                  </p>
@@ -126,12 +126,86 @@ while True:
 <br> o.write(x) lastreadchar = x
                 </i>
               </p>
+          <p>Or you can also use a simpler approach which I wrote myself </p>
+          <p>
+            <i> 
+              with open('file.txt') as f: mylist = list(f)
+  <br> temp = mylist[0]
+<br> l =	temp.split(']') l.pop(0)
+ <br> for x in range(0,len(l)): l[x] = l[x][3:]
+<br> l[x] = l[x].split(', ')
+
+
+            </i> 
+          </p>
+          <p> If you have any doubt regarding the preprocessing of this data please refer to this <a> <href=" https://stackoverflow.com/questions/59325991/how-to-open-a-big-text-file-which-is-in-the-format-skill1-skill2-skill3">Stackoverflow </a> thread. </p>
+            
             </td>
           </tr>
         </tbody></table>
         
+  <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+            <td style="padding:20px;width:100%;vertical-align:middle">
+              <heading>Word2Vec</heading>
+              <p> 
+                Word2Vec is of two types CBOW (Continuous Bag of Words) or continuous skip gram.It can be understood as a two layered NN (Neural Net) that takes a corpus of text as input and return a vector. It can not be considered a Deep Neural Network but it is able to turn texts into numeric form understandable by deep nets.
+                
+              </p>
+              <p> <i> Word2vec is a group of related models that are used to produce word embeddings. These models are shallow, two-layer neural networks that are trained to reconstruct linguistic contexts of words. </i> </p>
+              <p>Now we are going to implement CBOW model Xrst and then later on we will implement the Skip Gram model. </p>
+              <p> 
+               <br> if not os.path.exists(‘model_out’):
+              <br> model1 = gensim.models.Word2Vec(l, min_count = 1, size = 100, window = 5)
+<br> model1.save(‘model_out’)
+<br> skill1 = input(“Enter first skill:”).lower() 
+         <br>       skill2 = input(“Enter second skill:”).lower()
+             <br>   model_new = Word2Vec.load('model_out')
+                <br> print(model_new.similarity(skill1,skill2))
+
+              </p>
+              <p> An open source library known as Gensim which is built for implementing unsupervised machine learning algorithms can be used here to implement our Word2Vec models. It can be simply installed by using pip.
+              </p>
+              <p> <i> <b> pip install Genism </b> </i> </p> 
+              <p> after importing the Word2Vec model from te Gensim .models we can directly use the Word2Vec() method for training our model. We can change our parameters by Hit and Trial to obtain better results. </p>
+              <p> <i> <b> from genism.models import Word2Vec </b> </i> </p> 
+              <p> To obtain the similarity of diTerent skills we can use the model.similarity(skill1,skill2) method which will give out the result in percentage. </p>
+              
+              </td>
+          </tr>
+        </tbody></table>
         
         
+  <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+            <td style="padding:20px;width:100%;vertical-align:middle">
+              <heading>Visualisation using TensorBoard</heading>
+              <p>
+                <i> TensorBoard provides the visualisation and tooling needed for machine learning experimentation. </i> </p>
+              <p> The following code can be used for visualising the data with the help of TensorBoard projector which creates a mesh of words using PCA and each word is connected to other by calculating their Cosine similarities.</p>
+              <p>
+                model2 = gensim.models.keyedvectors.KeyedVectors.load(‘model_out’)
+                max_size = len(model2.wv.vocab)-1
+w2v = np.zeros((max_size,model2.layer1_size))
+if not os.path.exists(‘projections’):
+os.makedirs(‘projections’)
+with open(“projections/metadata.tsv”,”w+”) as file_metadata:
+for i, word in enumerate(model2.wv.index2word[:max_size]):
+w2v[i] = model2.wv[word]
+file_metadata.write(word + ‘\n’) sess = tf.InteractiveSession() with tf.device(“/cpu:0”):
+embedding = tf.Variable(w2v, trainable=False, name=’embedding’) tf.global_variables_initializer().run()
+saver = tf.train.Saver()
+writer = tf.summary.FileWriter(‘projections’,sess.graph) config = projector.ProjectorConfig()
+embed = config.embeddings.add()
+embed.tensor_name = ‘embedding’
+embed.metadata_path = ‘metadata.tsv’ projector.visualize_embeddings(writer, config) saver.save(sess, ‘projections/model.ckpt’, global_step=max_size) </p>
+              
+              
+            </td>
+          </tr>
+        </tbody></table>
+  
+  
       </td>
     </tr>
   </table>
