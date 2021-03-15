@@ -75,7 +75,7 @@ So with the help of a practical example I will try to explain the concepts of Wo
               <p>
                We are given a dataset which is in the form:
                 <p style="text-align:center;background-color:rgb(224,224,224);" >
-                <i> [[skill1,skill2,skill3,...],[skill1,skill4,skill6,...],....] </i>
+                  <i> <b> [[skill1,skill2,skill3,...],[skill1,skill4,skill6,...],....] </b> </i>
                 <!-- <span class="highlight">highlighted</span>. -->
               </p>
                 Each list inside the main list is of a unique candidate. So the number of candidates is equal to the length of the outer list. Which in our dataset is around 3 million. We want to learn an embedding representation of each skill and plot it using TensorBoard to analyze. The idea to solve is of word embeddings where words of similar meaning tend to lie close to each other for example red and black lie closer to each other in the embedding space than semantically diTerent words like black and apple. Since our dataset contains skills instead of general words skills like Python and Java should lie closer to each other than say Python and Sales Management.
@@ -97,8 +97,8 @@ So with the help of a practical example I will try to explain the concepts of Wo
 Firstly, since our data is in .txt format we need to open it using the with open command in python as follows:
 
                 <p style="background-color:rgb(224,224,224);">
-                <i> <br> &nbsp;&nbsp; with open(“all_linkedin_skill_data”,mode=’r’) as i, open(‘out.txt’,’w’) as
-<br> &nbsp;&nbsp;&nbsp;&nbsp; x = i.read(1)
+                <i>  &nbsp;&nbsp; with open(“all_linkedin_skill_data”,mode=’r’) as i, open(‘out.txt’,’w’) as    
+          <br> &nbsp;&nbsp;&nbsp;&nbsp; x = i.read(1)
                   <br>
  </i>
                 <!-- <span class="highlight">highlighted</span>. -->
@@ -133,7 +133,7 @@ Firstly, since our data is in .txt format we need to open it using the with open
           <p>Or you can also use a simpler approach which I wrote myself </p>
           <p style="background-color:rgb(224,224,224);">
             <i> 
-              <br> 
+              
             &nbsp;&nbsp;  with open('file.txt') as f:
               <br> &nbsp;&nbsp;&nbsp;&nbsp;mylist = list(f)
   <br> &nbsp;&nbsp;&nbsp;&nbsp;temp = mylist[0]
@@ -177,9 +177,9 @@ Firstly, since our data is in .txt format we need to open it using the with open
               
               <p> An open source library known as Gensim which is built for implementing unsupervised machine learning algorithms can be used here to implement our Word2Vec models. It can be simply installed by using pip.
               </p>
-              <pstyle="text-align:center;background-color:rgb(224,224,224);"> <i> <b> pip install Genism </b> </i> </p> 
+              <p> <i> <b> pip install Genism </b> </i> </p> 
               <p> after importing the Word2Vec model from te Gensim .models we can directly use the Word2Vec() method for training our model. We can change our parameters by Hit and Trial to obtain better results. </p>
-              <p style="text-align:center;background-color:rgb(224,224,224);" > <i> <b> from genism.models import Word2Vec </b> </i> </p> 
+              <p > <i> <b> from genism.models import Word2Vec </b> </i> </p> 
               <p> To obtain the similarity of diTerent skills we can use the model.similarity(skill1,skill2) method which will give out the result in percentage. </p>
               
               </td>
@@ -196,7 +196,7 @@ Firstly, since our data is in .txt format we need to open it using the with open
               <p> The following code can be used for visualising the data with the help of TensorBoard projector which creates a mesh of words using PCA and each word is connected to other by calculating their Cosine similarities.</p>
               <p style="background-color:rgb(224,224,224);">
                 <i> 
-                <br>&nbsp;&nbsp; model2 = gensim.models.keyedvectors.KeyedVectors.load(‘model_out’)
+                &nbsp;&nbsp; model2 = gensim.models.keyedvectors.KeyedVectors.load(‘model_out’)
                 <br>&nbsp;&nbsp; max_size = len(model2.wv.vocab)-1
 <br> &nbsp;&nbsp;w2v = np.zeros((max_size,model2.layer1_size))
 <br> &nbsp;&nbsp;if not os.path.exists(‘projections’):
